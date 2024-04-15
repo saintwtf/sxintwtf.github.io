@@ -64,7 +64,7 @@ body {
     height: 3rem;
     z-index: 100;
     margin: 1.5rem;
-    position: absolute;
+    position: flex;
     background-color: #0e0e0e77;
     padding: 0.6rem;
     border-radius: 1.4vh;
@@ -90,6 +90,7 @@ body {
     align-items: center;
 }
 
+
 .pfp img{
     border-radius: 50%;
     width: 128px;
@@ -109,6 +110,31 @@ body {
     font-size: 32px;
     color: #ffffff;
     text-shadow: 0px 0px 16.5px #ffffffef;
+}
+
+.glow {
+    font-size: 80px;
+    color: #fff;
+    text-align: center;
+    -webkit-animation: glow 1s ease-in-out infinite alternate;
+    -moz-animation: glow 1s ease-in-out infinite alternate;
+    animation: glow 1s ease-in-out infinite alternate;
+}
+
+@keyframes glow {
+    from {
+        text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #ffffff, 0 0 40px #ffffff, 0 0 50px #ffffff, 0 0 60px #ffffff, 0 0 70px #ffffff;
+    }
+    to {
+        text-shadow: 0 0 20px #fff, 0 0 30px #ffffff, 0 0 40px #ffffff, 0 0 50px #ffffff, 0 0 60px #ffffff, 0 0 70px #ffffff, 0 0 80px #ffffff;
+    }
+}
+
+.contact {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #ffffff;
 }
 
 .status {
