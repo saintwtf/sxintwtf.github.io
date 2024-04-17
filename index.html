@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="icon" type="image/x-icon"
         href="https://cdn.discordapp.com/attachments/1215523448428957717/1228107943719862332/SAINT_1.png?ex=662ad7a6&is=661862a6&hm=c4744e8d190f4d03c2768943853c03caeaa565956b5b31d8e624ee5c77e42edb&">
     <meta property="og:title" content="Saint.WTF">
@@ -17,21 +18,38 @@
     <meta property="og:locale" content="en_US">
     <meta property="og:color" content="#ff0000">
     <style>
-        #overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgb(0, 0, 0);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: #838383;
-            font-size: 10px;
-            z-index: 9999;
-            cursor: cell;
+
+        body {
+            overflow: auto;
         }
+        #overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 12px;
+    z-index: 9999;
+    cursor: cell;
+    background: linear-gradient(45deg, rgb(0, 0, 0), rgb(54, 54, 54), black);
+    background-size: 400% 400%;
+    animation: gradientAnimation 10s ease infinite;
+}
+
+@keyframes gradientAnimation {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
 
         #overlay.hidden {
             display: none;
@@ -41,6 +59,21 @@
     text-align: center;
 }
 
+.navigation-button {
+      display: inline-block;
+      position: flex;
+      padding: 5px 15px;
+      background-color: #53535300; /* Blue color */
+      color: #fff; /* White text color */
+      text-decoration: none;
+      border-radius: 5px;
+    }
+
+    /* Hover effect */
+    .navigation-button:hover {
+      background-color: #838383; /* Darker blue color */
+    }
+
     </style>
 </head>
 
@@ -48,8 +81,9 @@
     <div id="overlay">
       <div id="overlay">
         <div>
-            <h3 class="text-glow">〔 <span id="ip_address"></span> 〕</h3>
-            <p>(Click to enter)</p>
+            <h3 class="text-glow" style="color: #a5a5a5;">〔 <span id="ip_address"></span> 〕</h3>
+            <p style="color: #a5a5a5;">(Click to enter)</p>
+            <p style="color: #a5a5a5;">Made with ❤️ by @saintlf</p>
         </div>
     </div>
     </div>
@@ -155,6 +189,7 @@
                         <div class="current-time" id="current-time"></div>
                     </div>
                 </div>
+                <a href="users.html" class="navigation-button">user lookup</a>
             </div>
         </div>
     </main>
