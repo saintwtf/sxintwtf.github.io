@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saint's Spy Tool</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        #avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin-bottom: 10px;
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
+
+        #avatar:hover {
+            transform: scale(1.1);
+        }
+
+        #container {
+            max-width: 400px;
+            background-color: black;
+            padding: 20px;
+            border-radius: 20px;
+            animation: fadeInDown 0.5s ease;
+            color: white;
+        }
+
+        #discordIdInputContainer {
+            width: 200px;
+            height: 40px;
+            position: relative;
+        }
+
+        #discordIdInput {
+            width: 100%;
+            height: 100%;
+            padding: 8px;
+            border-radius: 8px;
+            border: 2px solid transparent;
+            outline: none;
+            background-color: #333; /* Dark gray color for search box */
+            color: white;
+            text-align: center;
+        }
+
+        #status {
+            font-size: 14px;
+            margin-top: 8px;
+            text-align: center;
+        }
+
+        .status-online {
+            color: #47d148; /* Green color for online */
+        }
+
+        .status-offline {
+            color: #f04747; /* Red color for offline */
+        }
+
+        .neon-animation {
+            animation: neonGlow 1s ease-in-out infinite alternate;
+        }
+
+        @keyframes neonGlow {
+            0% {
+                text-shadow: 0 0 5px #ff7f00, 0 0 10px #ff7f00, 0 0 20px #ff7f00, 0 0 30px #ff7f00, 0 0 40px #ff7f00;
+            }
+
+            100% {
+                text-shadow: 0 0 10px #ff7f00, 0 0 20px #ff7f00, 0 0 30px #ff7f00, 0 0 40px #ff7f00, 0 0 50px #ff7f00;
+            }
+        }
+
+        @keyframes fadeInDown {
+            0% {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInFromLeft {
+            0% {
+                opacity: 0;
+                transform: translateX(-100%);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes rainbowAnimation {
+            0% {
+                color: red;
+            }
+
+            20% {
+                color: orange;
+            }
+
+            40% {
+                color: yellow;
+            }
+
+            60% {
+                color: green;
+            }
+
+            80% {
+                color: blue;
+            }
+
+            100% {
+                color: purple;
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-black text-white min-h-screen flex justify-center items-center">
+    <div id="container" class="animate__animated animate__slideInFromLeft">
+        <h2 class="text-3xl font-semibold mb-4 text-center neon-text neon-animation" style="animation: rainbowAnimation 5s linear infinite alternate;">Saint's Spy Tool</h2>
+        <div id="discordIdInputContainer" class="mx-auto mb-4">
+            <input type="text" id="discordIdInput" placeholder="Enter Discord ID">
+        </div>
+        <button onclick="lookupUser()"
+            class="w-full bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500">
+            SPY
+        </button>
+        <p id="errorMessage" class="text-red-500 mt-4 text-center"></p>
+        <div id="user-info" style="display: none;" class="mt-4">
+            <a id="profileLink" href="" target="_blank">
+                <img id="avatar" src="" alt="Avatar" class="mx-auto">
+            </a>
+            <p id="username" class="text-xl font-bold text-center mt-2"></p>
+            <p id="status" class="mt-2"></p>
+            <p id="activeOnWeb" class="mt-2"></p>
+            <p id="activeOnDesktop" class="mt-2"></p>
+            <p id="activeOnMobile" class="mt-2"></p>
+            <p id="listeningToSpotify" class="mt-2"></p>
+        </div>
+    </div>
+
+    <script>
+        function lookupUser() {
+            const discordId = document.getElementById('discordIdInput').value.trim();
+            const apiUrl = `https://api.lanyard.rest/v1/users/${discordId}`;
+
+            fetch(apiUrl)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('User not found');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    displayUserInfo(data);
+                })
+                .catch(error => {
+                    console.error('Error fetching user data:', error);
+                    document.getElementById('user-info').style.display = 'none';
+                    document.getElementById('errorMessage').innerText = error.message;
+                });
+        }
+
+        function displayUserInfo(userInfo) {
+            document.getElementById('errorMessage').innerText = '';
+            document.getElementById('user-info').style.display = 'block';
+            
+            const avatar = document.getElementById('avatar');
+            avatar.src = `https://cdn.discordapp.com/avatars/${userInfo.data.discord_user.id}/${userInfo.data.discord_user.avatar}.png`;
+            avatar.onclick = () => {
+                window.open(`https://discord.com/users/${userInfo.data.discord_user.id}`);
+            };
+
+            document.getElementById('username').innerText = userInfo.data.discord_user.username;
+
+            const statusElement = document.getElementById('status');
+            if (userInfo.data.discord_status) {
+                const status = userInfo.data.discord_status;
+                statusElement.innerText = `Status: ${status}`;
+                statusElement.className = getStatusClass(status);
+            } else {
+                statusElement.innerText = 'Status: Unknown';
+                statusElement.className = '';
+            }
+
+            document.getElementById('activeOnWeb').innerText = `Active on Discord Web: ${userInfo.data.active_on_discord_web}`;
+            document.getElementById('activeOnDesktop').innerText = `Active on Discord Desktop: ${userInfo.data.active_on_discord_desktop}`;
+            document.getElementById('activeOnMobile').innerText = `Active on Discord Mobile: ${userInfo.data.active_on_discord_mobile}`;
+            document.getElementById('listeningToSpotify').innerText = `Listening to Spotify: ${userInfo.data.listening_to_spotify}`;
+        }
+
+        function getStatusClass(status) {
+            switch (status) {
+                case 'online':
+                    return 'status-online';
+                case 'offline':
+                    return 'status-offline';
+                case 'idle':
+                    return 'status-idle';
+                case 'dnd':
+                    return 'status-dnd';
+                default:
+                    return '';
+            }
+        }
+    </script>
+</body>
+
+</html>
