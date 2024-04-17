@@ -159,7 +159,7 @@
             fetch(apiUrl)
                 .then(response => {
                     if (!response.ok) {
-                        throw new Error('User not found');
+                        throw new Error('Sorry this user is not apart of lanyards discord server');
                     }
                     return response.json();
                 })
