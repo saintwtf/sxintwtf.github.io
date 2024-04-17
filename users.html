@@ -7,74 +7,132 @@
     <title>Saint's Spy Tool</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <style>
+        /* Global Styles */
+        body {
+            background-color: #36393f; /* Discord's dark background */
+            color: #fff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        /* Container Styles */
+        #container {
+            max-width: 400px;
+            padding: 20px;
+            border-radius: 8px;
+            background-color: #202225; /* Discord's chat background */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Navigation Bar Styles */
+        nav {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 10px 0;
+        }
+
+        nav a {
+            color: #7289da; /* Discord's accent color */
+            text-decoration: none;
+            padding: 8px 16px;
+            transition: all 0.3s ease;
+        }
+
+        nav a:hover {
+            color: #ffffff; /* White on hover */
+        }
+
+        /* Input Styles */
+        #discordIdInputContainer {
+            width: 100%;
+            margin-bottom: 20px;
+            text-align: center; /* Centering the search box */
+        }
+
+        #discordIdInput {
+            width: 70%;
+            padding: 10px;
+            border-radius: 8px;
+            border: none;
+            outline: none;
+            background-color: #40444b; /* Discord's input background */
+            color: #b9bbbe; /* Discord's input text color */
+            text-align: center;
+        }
+
+        /* Button Styles */
+        #lookupBtn {
+            width: 70%;
+            padding: 10px;
+            border-radius: 8px;
+            border: none;
+            outline: none;
+            background-color: #7289da; /* Discord's accent color */
+            color: #fff;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-left: auto;
+            margin-right: auto;
+            display: block; /* Centering the button */
+        }
+
+        #lookupBtn:hover {
+            background-color: #677bc4; /* Darker accent color on hover */
+        }
+
+        /* Error Message Styles */
+        #errorMessage {
+            color: #f04747; /* Discord's red color */
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        /* User Info Styles */
+        #user-info {
+            display: none;
+            margin-top: 20px;
+        }
+
         #avatar {
             width: 100px;
             height: 100px;
             border-radius: 50%;
-            margin-bottom: 10px;
-            transition: transform 0.3s ease;
+            margin: 0 auto 10px;
             cursor: pointer;
+            transition: transform 0.3s ease;
         }
 
         #avatar:hover {
             transform: scale(1.1);
         }
 
-        #container {
-            max-width: 400px;
-            background-color: black;
-            padding: 20px;
-            border-radius: 20px;
-            animation: fadeInDown 0.5s ease;
-            color: white;
-        }
-
-        #discordIdInputContainer {
-            width: 200px;
-            height: 40px;
-            position: relative;
-        }
-
-        #discordIdInput {
-            width: 100%;
-            height: 100%;
-            padding: 8px;
-            border-radius: 8px;
-            border: 2px solid transparent;
-            outline: none;
-            background-color: #333; /* Dark gray color for search box */
-            color: white;
+        .user-info-text {
             text-align: center;
+            margin-top: 5px;
         }
 
-        #status {
-            font-size: 14px;
-            margin-top: 8px;
-            text-align: center;
+        /* Neon Text Effect */
+        .neon-text {
+            text-shadow: 0 0 10px #7289da; /* Discord's accent color */
         }
 
-        .status-online {
-            color: #47d148; /* Green color for online */
-        }
-
-        .status-offline {
-            color: #f04747; /* Red color for offline */
-        }
-
-        .neon-animation {
-            animation: neonGlow 1s ease-in-out infinite alternate;
-        }
-
+        /* Neon Animation */
         @keyframes neonGlow {
             0% {
-                text-shadow: 0 0 5px #ff7f00, 0 0 10px #ff7f00, 0 0 20px #ff7f00, 0 0 30px #ff7f00, 0 0 40px #ff7f00;
+                text-shadow: 0 0 5px #7289da; /* Discord's accent color */
             }
 
             100% {
-                text-shadow: 0 0 10px #ff7f00, 0 0 20px #ff7f00, 0 0 30px #ff7f00, 0 0 40px #ff7f00, 0 0 50px #ff7f00;
+                text-shadow: 0 0 10px #7289da, 0 0 20px #7289da, 0 0 30px #7289da, 0 0 40px #7289da, 0 0 50px #7289da; /* Discord's accent color */
             }
         }
 
+        /* Fade In Animation */
         @keyframes fadeInDown {
             0% {
                 opacity: 0;
@@ -86,72 +144,40 @@
                 transform: translateY(0);
             }
         }
-
-        @keyframes slideInFromLeft {
-            0% {
-                opacity: 0;
-                transform: translateX(-100%);
-            }
-
-            100% {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-
-        @keyframes rainbowAnimation {
-            0% {
-                color: red;
-            }
-
-            20% {
-                color: orange;
-            }
-
-            40% {
-                color: yellow;
-            }
-
-            60% {
-                color: green;
-            }
-
-            80% {
-                color: blue;
-            }
-
-            100% {
-                color: purple;
-            }
-        }
     </style>
 </head>
 
-<body class="bg-black text-white min-h-screen flex justify-center items-center">
-    <div id="container" class="animate__animated animate__slideInFromLeft">
-        <h2 class="text-3xl font-semibold mb-4 text-center neon-text neon-animation" style="animation: rainbowAnimation 5s linear infinite alternate;">Saint's Spy Tool</h2>
-        <div id="discordIdInputContainer" class="mx-auto mb-4">
+<body>
+    <!-- Navigation Bar -->
+    <nav>
+        <a href="index.html">Home Page</a>
+    </nav>
+
+    <!-- Main Content Container -->
+    <div id="container" class="animate__animated animate__fadeInDown">
+        <h2 class="text-3xl font-semibold mb-4 text-center neon-text" style="animation: neonGlow 1s ease-in-out infinite alternate;">Saint's Spy Tool</h2>
+        <div id="discordIdInputContainer">
             <input type="text" id="discordIdInput" placeholder="Enter Discord ID">
         </div>
-        <button onclick="lookupUser()"
-            class="w-full bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500">
+        <button onclick="lookupUser()" id="lookupBtn">
             SPY
         </button>
-        <p id="errorMessage" class="text-red-500 mt-4 text-center"></p>
-        <div id="user-info" style="display: none;" class="mt-4">
+        <p id="errorMessage" class="mt-4"></p>
+        <div id="user-info">
             <a id="profileLink" href="" target="_blank">
-                <img id="avatar" src="" alt="Avatar" class="mx-auto">
+                <img id="avatar" src="" alt="Avatar">
             </a>
-            <p id="username" class="text-xl font-bold text-center mt-2"></p>
-            <p id="status" class="mt-2"></p>
-            <p id="activeOnWeb" class="mt-2"></p>
-            <p id="activeOnDesktop" class="mt-2"></p>
-            <p id="activeOnMobile" class="mt-2"></p>
-            <p id="listeningToSpotify" class="mt-2"></p>
+            <p id="username" class="user-info-text"></p>
+            <p id="status" class="user-info-text"></p>
+            <p id="activeOnWeb" class="user-info-text"></p>
+            <p id="activeOnDesktop" class="user-info-text"></p>
+            <p id="activeOnMobile" class="user-info-text"></p>
+            <p id="listeningToSpotify" class="user-info-text"></p>
         </div>
     </div>
 
     <script>
+        // Function to fetch and display user info
         function lookupUser() {
             const discordId = document.getElementById('discordIdInput').value.trim();
             const apiUrl = `https://api.lanyard.rest/v1/users/${discordId}`;
@@ -159,7 +185,7 @@
             fetch(apiUrl)
                 .then(response => {
                     if (!response.ok) {
-                        throw new Error('Sorry this user is not apart of lanyards discord server');
+                        throw new Error('This user is not apart of lanyards discord we cannot fetch there info');
                     }
                     return response.json();
                 })
@@ -173,6 +199,7 @@
                 });
         }
 
+        // Function to display user info
         function displayUserInfo(userInfo) {
             document.getElementById('errorMessage').innerText = '';
             document.getElementById('user-info').style.display = 'block';
@@ -201,6 +228,7 @@
             document.getElementById('listeningToSpotify').innerText = `Listening to Spotify: ${userInfo.data.listening_to_spotify}`;
         }
 
+        // Function to determine status class
         function getStatusClass(status) {
             switch (status) {
                 case 'online':
